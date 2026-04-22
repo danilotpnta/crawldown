@@ -9,17 +9,21 @@ from crawldown.extractor import is_html_url, url_allowed
 # is_html_url
 # ---------------------------------------------------------------------------
 
-@pytest.mark.parametrize("url,expected", [
-    ("https://example.com/page", True),
-    ("https://example.com/docs/intro", True),
-    ("https://example.com/file.pdf", False),
-    ("https://example.com/image.png", False),
-    ("https://example.com/style.css", False),
-    ("https://example.com/app.js", False),
-    ("https://example.com/archive.zip", False),
-    ("https://example.com/font.woff2", False),
-    ("https://example.com/video.mp4", False),
-])
+
+@pytest.mark.parametrize(
+    "url,expected",
+    [
+        ("https://example.com/page", True),
+        ("https://example.com/docs/intro", True),
+        ("https://example.com/file.pdf", False),
+        ("https://example.com/image.png", False),
+        ("https://example.com/style.css", False),
+        ("https://example.com/app.js", False),
+        ("https://example.com/archive.zip", False),
+        ("https://example.com/font.woff2", False),
+        ("https://example.com/video.mp4", False),
+    ],
+)
 def test_is_html_url(url, expected):
     assert is_html_url(url) is expected
 
@@ -27,6 +31,7 @@ def test_is_html_url(url, expected):
 # ---------------------------------------------------------------------------
 # url_allowed (include / exclude patterns)
 # ---------------------------------------------------------------------------
+
 
 def test_url_allowed_no_filters():
     assert url_allowed("https://example.com/anything", [], []) is True
@@ -56,6 +61,7 @@ def test_url_allowed_exclude_takes_priority_over_include():
 # ---------------------------------------------------------------------------
 # _fetch_with_retry
 # ---------------------------------------------------------------------------
+
 
 @pytest.mark.asyncio
 async def test_fetch_with_retry_succeeds_first_try():
@@ -108,6 +114,7 @@ async def test_fetch_with_retry_raises_after_max_attempts():
 # robots.txt enforcement (via _crawl integration)
 # ---------------------------------------------------------------------------
 
+
 @pytest.mark.asyncio
 async def test_crawl_skips_robots_disallowed_url(tmp_path):
     import urllib.robotparser
@@ -150,6 +157,7 @@ async def test_crawl_skips_robots_disallowed_url(tmp_path):
 # CLI --include / --exclude flags
 # ---------------------------------------------------------------------------
 
+
 def test_cli_exclude_flag(tmp_path):
     from unittest.mock import patch as _patch
 
@@ -173,9 +181,12 @@ def test_cli_exclude_flag(tmp_path):
             app,
             [
                 "https://example.com",
-                "--output", str(tmp_path),
-                "--depth", "0",
-                "--exclude", "/api/*",
+                "--output",
+                str(tmp_path),
+                "--depth",
+                "0",
+                "--exclude",
+                "/api/*",
             ],
         )
 

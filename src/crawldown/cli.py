@@ -75,6 +75,4 @@ def main(
     except KeyboardInterrupt:
         console.print("\n[yellow]Interrupted — partial results saved to output directory.[/yellow]")
 
-    console.print(
-        f"\n[bold]Done.[/bold] {done} pages crawled, {errors} errors. Output: {output}\n"
-    )
+    console.print(f"\n[bold]Done.[/bold] {done} pages crawled, {errors} errors. Output: {output}\n")

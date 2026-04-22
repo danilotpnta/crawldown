@@ -39,7 +39,5 @@ def test_url_to_path_root():
 
 
 def test_url_to_path_with_base_prefix():
-    result = url_to_path(
-        "https://example.com/help", "https://example.com/help/getting-started"
-    )
+    result = url_to_path("https://example.com/help", "https://example.com/help/getting-started")
     assert result == ["getting-started"]

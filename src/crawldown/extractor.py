@@ -3,12 +3,38 @@ from pathlib import PurePosixPath
 from urllib.parse import urljoin, urlparse
 
 _NON_HTML_EXTENSIONS = {
-    ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx",
-    ".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".ico",
-    ".zip", ".tar", ".gz", ".bz2", ".7z",
-    ".mp4", ".mp3", ".avi", ".mov", ".webm", ".ogg",
-    ".css", ".js",
-    ".woff", ".woff2", ".ttf", ".eot", ".otf",
+    ".pdf",
+    ".doc",
+    ".docx",
+    ".xls",
+    ".xlsx",
+    ".ppt",
+    ".pptx",
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".gif",
+    ".svg",
+    ".webp",
+    ".ico",
+    ".zip",
+    ".tar",
+    ".gz",
+    ".bz2",
+    ".7z",
+    ".mp4",
+    ".mp3",
+    ".avi",
+    ".mov",
+    ".webm",
+    ".ogg",
+    ".css",
+    ".js",
+    ".woff",
+    ".woff2",
+    ".ttf",
+    ".eot",
+    ".otf",
 }
 
 
@@ -60,7 +86,7 @@ def url_to_path(base_url: str, page_url: str) -> list[str]:
 
     # Strip the base path prefix so output is relative to the crawl root
     if page_path.startswith(base_path):
-        relative = page_path[len(base_path):].lstrip("/")
+        relative = page_path[len(base_path) :].lstrip("/")
     else:
         relative = page_path.lstrip("/")
 
