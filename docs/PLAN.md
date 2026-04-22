@@ -92,7 +92,7 @@ Goals:
 
 ---
 
-### Phase 2 — CLI `feature/cli`
+### Phase 2 — CLI `feature/cli` ✅
 
 **Branch:** `feature/cli` → PR → merge to `main`
 
@@ -100,7 +100,7 @@ Goals:
 - [x] `cli.py` with Typer — `crawldown <url> [--output DIR] [--depth N] [--delay FLOAT] [--no-robots]`
 - [x] Progress display using `rich` (spinner + per-page OK/FAIL lines)
 - [x] `--version` flag
-- [ ] End-to-end test: invoke CLI via `subprocess`, assert files are created
+- [x] End-to-end test: invoke CLI via `subprocess`, assert files are created
 
 **Done when:** `crawldown https://example.com --output ./out` runs and shows progress.
 
