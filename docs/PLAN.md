@@ -121,15 +121,15 @@ Goals:
 
 ---
 
-### Phase 4 — Docs & polish `feature/docs-polish`
+### Phase 4 — Docs & polish `feature/docs-polish` ✅
 
 **Branch:** `feature/docs-polish` → PR → merge to `main`
 
 Goals:
-- [ ] `docs/ROADMAP.md` updated with done items
-- [ ] Inline docstrings on all public functions
-- [ ] `CHANGELOG.md` (keep a changelog format)
-- [ ] Example scripts in `examples/`
+- [x] `docs/ROADMAP.md` with three planned future features
+- [x] Inline docstrings on all public functions
+- [x] `CHANGELOG.md` (keep a changelog format)
+- [x] Example scripts in `examples/` reviewed and updated
 - [ ] README badges (CI, PyPI version, license)
 
 ---
