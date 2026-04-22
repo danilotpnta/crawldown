@@ -76,17 +76,17 @@ Goals:
 
 ---
 
-### Phase 1 — Core library `feature/core-crawler`
+### Phase 1 — Core library `feature/core-crawler` ✅
 
 **Branch:** `feature/core-crawler` → PR → merge to `main`
 
 Goals:
-- [ ] `models.py` — `CrawlConfig` (url, output_dir, max_depth, delay, respect_robots) and `PageResult`
-- [ ] `extractor.py` — extract all same-domain links from a crawled page
-- [ ] `crawler.py` — async BFS crawl loop using `crawl4ai`, respects `max_depth`
-- [ ] `writer.py` — maps URL path → filesystem path, writes `.md` files
-- [ ] `__init__.py` — exports `crawl(url, output_dir, **kwargs)` as the public API
-- [ ] Tests for extractor and writer (unit, no network)
+- [x] `models.py` — `CrawlConfig` (url, output_dir, max_depth, delay, respect_robots) and `PageResult`
+- [x] `extractor.py` — extract all same-domain links from a crawled page
+- [x] `crawler.py` — async BFS crawl loop using `crawl4ai`, respects `max_depth`
+- [x] `writer.py` — maps URL path → filesystem path, writes `.md` files
+- [x] `__init__.py` — exports `crawl(url, output_dir, **kwargs)` as the public API
+- [x] Tests for extractor and writer (unit, no network) — 12/12 passing
 
 **Done when:** `python -c "from crawldown import crawl; import asyncio; asyncio.run(crawl('https://example.com', './out'))"` produces files.
 
@@ -97,9 +97,9 @@ Goals:
 **Branch:** `feature/cli` → PR → merge to `main`
 
 Goals:
-- [ ] `cli.py` with Typer — `crawldown <url> [--output DIR] [--depth N] [--delay FLOAT] [--no-robots]`
-- [ ] Progress display using `rich` (pages found, pages done, current URL)
-- [ ] `--version` flag
+- [x] `cli.py` with Typer — `crawldown <url> [--output DIR] [--depth N] [--delay FLOAT] [--no-robots]`
+- [x] Progress display using `rich` (spinner + per-page OK/FAIL lines)
+- [x] `--version` flag
 - [ ] End-to-end test: invoke CLI via `subprocess`, assert files are created
 
 **Done when:** `crawldown https://example.com --output ./out` runs and shows progress.
