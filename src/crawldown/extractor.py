@@ -1,4 +1,31 @@
+import fnmatch
+from pathlib import PurePosixPath
 from urllib.parse import urljoin, urlparse
+
+_NON_HTML_EXTENSIONS = {
+    ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx",
+    ".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".ico",
+    ".zip", ".tar", ".gz", ".bz2", ".7z",
+    ".mp4", ".mp3", ".avi", ".mov", ".webm", ".ogg",
+    ".css", ".js",
+    ".woff", ".woff2", ".ttf", ".eot", ".otf",
+}
+
+
+def is_html_url(url: str) -> bool:
+    """Return False if the URL path has a known non-HTML file extension."""
+    suffix = PurePosixPath(urlparse(url).path).suffix.lower()
+    return suffix not in _NON_HTML_EXTENSIONS
+
+
+def url_allowed(url: str, include: list[str], exclude: list[str]) -> bool:
+    """Return False if url is excluded or not matched by any include pattern."""
+    path = urlparse(url).path
+    if exclude and any(fnmatch.fnmatch(path, pat) for pat in exclude):
+        return False
+    if include and not any(fnmatch.fnmatch(path, pat) for pat in include):
+        return False
+    return True
 
 
 def normalize_url(url: str) -> str:

@@ -9,6 +9,8 @@ class CrawlConfig:
     max_depth: int | None = None  # None = unlimited
     delay: float = 0.0
     respect_robots: bool = True
+    include: list[str] = field(default_factory=list)  # glob patterns for URL paths to allow
+    exclude: list[str] = field(default_factory=list)  # glob patterns for URL paths to block
 
     def __post_init__(self):
         self.output_dir = Path(self.output_dir)
