@@ -38,6 +38,12 @@ Or with [uv](https://github.com/astral-sh/uv):
 uv tool install crawldown
 ```
 
+**First-time setup** — crawldown uses [crawl4ai](https://github.com/unclecode/crawl4ai) under the hood, which needs a browser installed once to handle JavaScript-rendered pages:
+
+```bash
+crawl4ai-setup
+```
+
 ---
 
 ## Quickstart
@@ -53,6 +59,12 @@ crawldown https://docs.example.com --output ./output --depth 2
 
 # Add a delay between requests (seconds)
 crawldown https://docs.example.com --output ./output --delay 0.5
+
+# Only crawl URLs matching a pattern
+crawldown https://docs.example.com --output ./output --include '/docs/*'
+
+# Skip URLs matching a pattern
+crawldown https://docs.example.com --output ./output --exclude '/api/*'
 
 # Skip robots.txt enforcement
 crawldown https://docs.example.com --output ./output --no-robots
@@ -80,6 +92,8 @@ config = CrawlConfig(
     max_depth=3,
     delay=0.5,
     respect_robots=True,
+    include=["/docs/*"],   # only crawl these paths (glob)
+    exclude=["/api/*"],    # skip these paths (glob)
 )
 
 asyncio.run(crawl(config))
@@ -103,6 +117,8 @@ asyncio.run(crawl(config))
 | `--output`, `-o` | `./crawldown-output` | Directory to save Markdown files |
 | `--depth`, `-d` | unlimited | Max link-follow depth |
 | `--delay` | `0.0` | Seconds to wait between requests |
+| `--include` | — | Only crawl paths matching this glob (repeatable) |
+| `--exclude` | — | Skip paths matching this glob (repeatable) |
 | `--no-robots` | off | Ignore `robots.txt` |
 | `--version` | — | Show version and exit |
 
