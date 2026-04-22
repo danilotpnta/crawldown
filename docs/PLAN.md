@@ -106,16 +106,16 @@ Goals:
 
 ---
 
-### Phase 3 — Robustness `feature/robustness`
+### Phase 3 — Robustness `feature/robustness` ✅
 
 **Branch:** `feature/robustness` → PR → merge to `main`
 
 Goals:
-- [ ] `robots.txt` parsing and enforcement
-- [ ] Retry logic for failed pages (3 attempts, exponential backoff)
-- [ ] `--include` / `--exclude` URL pattern filters
-- [ ] Skip non-HTML content (PDFs, images, etc.)
-- [ ] Graceful Ctrl-C: save what was crawled so far
+- [x] `robots.txt` parsing and enforcement
+- [x] Retry logic for failed pages (3 attempts, exponential backoff)
+- [x] `--include` / `--exclude` URL pattern filters
+- [x] Skip non-HTML content (PDFs, images, etc.)
+- [x] Graceful Ctrl-C: save what was crawled so far
 
 **Done when:** crawling a large real site completes without crashes.
 
