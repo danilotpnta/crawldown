@@ -115,7 +115,12 @@ async def crawl(
     output_dir: str | Path = "crawldown-output",
     **kwargs,
 ):
-    """Public API entry point. Accepts a URL string or a CrawlConfig."""
+    """Crawl url_or_config and write each page as a Markdown file under output_dir.
+
+    Pass a plain URL string for defaults, or a CrawlConfig for full control.
+    Any extra kwargs are forwarded to CrawlConfig when a string URL is given.
+    Returns a list of PageResult objects (one per visited URL).
+    """
     if isinstance(url_or_config, str):
         config = CrawlConfig(url=url_or_config, output_dir=Path(output_dir), **kwargs)
     else:

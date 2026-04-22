@@ -36,6 +36,7 @@ def normalize_url(url: str) -> str:
 
 
 def same_domain(base_url: str, candidate: str) -> bool:
+    """Return True if both URLs share the same netloc."""
     return urlparse(base_url).netloc == urlparse(candidate).netloc
 
 
