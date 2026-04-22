@@ -134,15 +134,16 @@ Goals:
 
 ---
 
-### Phase 5 — PyPI release `feature/release`
+### Phase 5 — PyPI release `feature/release` ✅
 
 **Branch:** `feature/release` → PR → merge to `main`
 
 Goals:
-- [ ] GitHub Actions release workflow (triggers on `v*` tags)
-- [ ] `__version__` wired to `pyproject.toml` via `importlib.metadata`
-- [ ] Test on TestPyPI first, then real PyPI
-- [ ] `git tag v0.1.0` → automated publish
+- [x] GitHub Actions release workflow (triggers on `v*` tags)
+- [x] `__version__` wired to `pyproject.toml` via `importlib.metadata`
+- [ ] Configure Trusted Publisher on TestPyPI and PyPI (one-time manual step)
+- [ ] Test on TestPyPI first: `git tag v0.1.0-rc1 && git push --tags`
+- [ ] Tag `v0.1.0` and push to trigger automated publish
 
 **Done when:** `pip install crawldown` installs the real package.
 
