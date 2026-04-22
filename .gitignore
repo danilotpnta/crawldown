@@ -35,9 +35,9 @@ htmlcov/
 *.swo
 .DS_Store
 
-# crawldown output (scraped sites should not be committed)
+# crawldown output — scraped sites should not be committed
 crawldown-output/
-recime-help-center/
+output/
 
 # Playwright / browser cache (crawl4ai)
 .crawl4ai/
