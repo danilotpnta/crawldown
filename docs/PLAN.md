@@ -24,7 +24,7 @@
 ## Repository structure
 
 ```
-crawldown/                   ← repo root (was crawl4ai-test)
+crawldown/                   ← repo root
 ├── src/
 │   └── crawldown/
 │       ├── __init__.py      ← public API surface
