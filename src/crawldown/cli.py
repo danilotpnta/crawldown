@@ -31,6 +31,12 @@ def main(
     ),
     delay: float = typer.Option(0.0, "--delay", help="Seconds to wait between requests"),
     no_robots: bool = typer.Option(False, "--no-robots", help="Ignore robots.txt"),
+    include: list[str] = typer.Option(
+        [], "--include", help="URL path glob to include (repeatable, e.g. /docs/*)"
+    ),
+    exclude: list[str] = typer.Option(
+        [], "--exclude", help="URL path glob to exclude (repeatable, e.g. /api/*)"
+    ),
     version: bool | None = typer.Option(
         None, "--version", callback=_version_callback, is_eager=True
     ),
@@ -41,6 +47,8 @@ def main(
         max_depth=depth,
         delay=delay,
         respect_robots=not no_robots,
+        include=list(include),
+        exclude=list(exclude),
     )
 
     done = 0
@@ -57,12 +65,15 @@ def main(
 
     console.print(f"\n[bold]crawldown[/bold] {url}\n")
 
-    with Progress(
-        SpinnerColumn(),
-        TextColumn("[progress.description]{task.description}"),
-        transient=True,
-    ):
-        asyncio.run(_crawl(config, on_page=on_page))
+    try:
+        with Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            transient=True,
+        ):
+            asyncio.run(_crawl(config, on_page=on_page))
+    except KeyboardInterrupt:
+        console.print("\n[yellow]Interrupted — partial results saved to output directory.[/yellow]")
 
     console.print(
         f"\n[bold]Done.[/bold] {done} pages crawled, {errors} errors. Output: {output}\n"
