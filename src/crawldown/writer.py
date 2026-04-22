@@ -4,6 +4,7 @@ from crawldown.extractor import url_to_path
 
 
 def resolve_output_path(base_url: str, page_url: str, output_dir: Path) -> Path:
+    """Map a crawled URL to a .md file path inside output_dir, mirroring the URL structure."""
     parts = url_to_path(base_url, page_url)
     # If the last part has no extension, treat it as a directory with index.md
     last = parts[-1]
@@ -17,6 +18,7 @@ def resolve_output_path(base_url: str, page_url: str, output_dir: Path) -> Path:
 
 
 def write_page(path: Path, url: str, markdown: str) -> None:
+    """Write markdown content to path, prepending a source-URL header."""
     path.parent.mkdir(parents=True, exist_ok=True)
     header = f"# Source: {url}\n\n"
     path.write_text(header + markdown, encoding="utf-8")
