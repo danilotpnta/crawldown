@@ -41,3 +41,6 @@ output/
 
 # Playwright / browser cache (crawl4ai)
 .crawl4ai/
+
+# Claude Code session data
+.claude/
