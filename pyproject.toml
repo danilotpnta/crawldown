@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "crawldown"
-version = "0.1.2"
+version = "0.1.3"
 description = "Crawl any website and save every page as organized Markdown files"
 readme = "README.md"
 license = { file = "LICENSE" }

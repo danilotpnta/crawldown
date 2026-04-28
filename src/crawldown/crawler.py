@@ -72,7 +72,7 @@ async def _crawl(config: CrawlConfig, on_page=None, on_skip=None) -> list[PageRe
                     hrefs = [lnk.get("href", "") for lnk in raw_links if lnk.get("href")]
                     links = extract_links(url, hrefs)
 
-                    output_path = resolve_output_path(config.url, url, config.output_dir)
+                    output_path = resolve_output_path(config.root_url, url, config.output_dir)
                     write_page(output_path, url, markdown)
 
                     page = PageResult(
