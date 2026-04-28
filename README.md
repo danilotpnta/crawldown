@@ -104,7 +104,7 @@ asyncio.run(crawl(config))
 ## How it works
 
 1. Starts at the given URL and fetches the page using [crawl4ai](https://github.com/unclecode/crawl4ai) (handles JavaScript-rendered pages).
-2. Extracts all links that stay within the same domain and URL prefix.
+2. Extracts all links that stay within the same domain.
 3. Converts each page to Markdown and saves it at a path matching the URL structure.
 4. Repeats for every discovered link up to `max_depth` (default: unlimited).
 

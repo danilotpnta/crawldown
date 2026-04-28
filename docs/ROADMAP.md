@@ -4,6 +4,14 @@ This file lists planned future features. Contributions are welcome — open an i
 
 ---
 
+## Known limitations
+
+### Button-based navigation
+
+Some sites (e.g. React/Next.js SPAs) render footer and navigation links as `<button>` elements with JavaScript click handlers instead of `<a href="...">` anchors. Standard link extraction only reads `<a>` tags, so these pages are invisible to the crawler regardless of depth or JS-rendering settings. The workaround for affected sites is to seed the crawl with the specific URLs you need (e.g. `crawldown https://example.com/terms-and-conditions`), or wait for sitemap.xml support (see below) which bypasses link discovery entirely.
+
+---
+
 ## Planned features
 
 ### `[Feature] Add index.json output`
