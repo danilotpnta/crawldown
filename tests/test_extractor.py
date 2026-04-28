@@ -41,3 +41,18 @@ def test_url_to_path_root():
 def test_url_to_path_with_base_prefix():
     result = url_to_path("https://example.com/help", "https://example.com/help/getting-started")
     assert result == ["getting-started"]
+
+
+def test_url_to_path_subpage_against_netloc_root():
+    # root_url is always scheme://netloc/ so subpages resolve to their own path segment
+    result = url_to_path("https://example.com/", "https://example.com/privacy-policy")
+    assert result == ["privacy-policy"]
+
+
+def test_url_to_path_subpage_against_netloc_root_no_silent_index():
+    # Regression: before the fix, passing the subpage as both base and page
+    # produced ["index"], causing all single-page subpage crawls to overwrite
+    # the same file. With root_url always set to netloc root this cannot happen.
+    result = url_to_path("https://example.com/", "https://example.com/terms-and-conditions")
+    assert result == ["terms-and-conditions"]
+    assert result != ["index"]

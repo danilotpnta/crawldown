@@ -99,6 +99,17 @@ config = CrawlConfig(
 asyncio.run(crawl(config))
 ```
 
+To crawl specific subpages directly, use `max_depth=0`. Output paths are always anchored to the site root, so files land in the right place regardless of where the crawl starts:
+
+```python
+config = CrawlConfig(
+    url="https://example.com/privacy-policy",
+    output_dir="./output",
+    max_depth=0,
+    # Writes to ./output/privacy-policy/index.md  ✓
+)
+```
+
 ---
 
 ## How it works

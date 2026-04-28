@@ -11,6 +11,18 @@ def test_resolve_output_path_root(tmp_path):
     assert path == tmp_path / "index" / "index.md"
 
 
+def test_resolve_output_path_subpage_as_root_url(tmp_path):
+    # Regression: when root_url is netloc root, crawling a subpage directly
+    # must write to its own path, not silently to index/index.md
+    path = resolve_output_path(
+        "https://example.com/",
+        "https://example.com/privacy-policy",
+        tmp_path,
+    )
+    assert path == tmp_path / "privacy-policy" / "index.md"
+    assert path != tmp_path / "index" / "index.md"
+
+
 def test_write_page_creates_file(tmp_path):
     path = tmp_path / "docs" / "page.md"
     write_page(path, "https://example.com/docs/page", "# Hello")

@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from pathlib import Path
+from urllib.parse import urlparse
 
 
 @dataclass
@@ -8,6 +9,7 @@ class CrawlConfig:
 
     url: str
     output_dir: Path = Path("crawldown-output")
+    root_url: str | None = None  # path anchor for output files; defaults to scheme://netloc/
     max_depth: int | None = None  # None = unlimited
     delay: float = 0.0  # seconds to wait between page fetches
     respect_robots: bool = True  # honour robots.txt disallow rules
@@ -16,6 +18,9 @@ class CrawlConfig:
 
     def __post_init__(self):
         self.output_dir = Path(self.output_dir)
+        if self.root_url is None:
+            parsed = urlparse(self.url)
+            self.root_url = f"{parsed.scheme}://{parsed.netloc}/"
 
 
 @dataclass

@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-04-28
+
+### Fixed
+
+- Fix silent data-loss when `CrawlConfig.url` is a subpage rather than the site root. Output paths are now anchored to `scheme://netloc/` (the new `root_url` field) instead of the crawl entry URL, so crawling `https://example.com/privacy-policy` with `max_depth=0` correctly writes to `privacy-policy/index.md` instead of `index/index.md`.
+
+### Added
+
+- `CrawlConfig.root_url` field — explicit path anchor for output file resolution. Defaults to `scheme://netloc/` of `url`, so existing code requires no changes.
+
 ## [0.1.2] - 2026-04-28
 
 ### Fixed
@@ -40,7 +50,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Non-HTML resource filtering — skips PDFs, images, fonts, archives, CSS, JS before requesting
 - Graceful Ctrl-C: saves partial results instead of crashing
 
-[Unreleased]: https://github.com/danilotpnta/crawldown/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/danilotpnta/crawldown/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/danilotpnta/crawldown/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/danilotpnta/crawldown/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/danilotpnta/crawldown/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/danilotpnta/crawldown/releases/tag/v0.1.0
