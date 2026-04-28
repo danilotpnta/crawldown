@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-04-28
+
+### Fixed
+
+- Replace raw Playwright stack trace with a single actionable error when the browser is not installed: `Browser not found. Run: crawl4ai-setup`
+- Warn clearly when robots.txt blocks the seed URL (previously: silent `0 pages crawled, 0 errors`)
+- Show count of URLs skipped by robots.txt and hint to use `--no-robots` to override
+- Fix unreachable robots.txt being incorrectly treated as "disallow all" instead of "allow all"
+
 ## [0.1.0] - 2026-04-22
 
 ### Added
@@ -24,5 +33,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Non-HTML resource filtering — skips PDFs, images, fonts, archives, CSS, JS before requesting
 - Graceful Ctrl-C: saves partial results instead of crashing
 
-[Unreleased]: https://github.com/danilotpnta/crawldown/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/danilotpnta/crawldown/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/danilotpnta/crawldown/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/danilotpnta/crawldown/releases/tag/v0.1.0

@@ -6,6 +6,7 @@ from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn
 
 from crawldown.crawler import _crawl
+from crawldown.extractor import normalize_url
 from crawldown.models import CrawlConfig, PageResult
 
 app = typer.Typer(help="Crawl any website and save every page as organized Markdown files.")
@@ -53,6 +54,8 @@ def main(
 
     done = 0
     errors = 0
+    robots_skipped: list[str] = []
+    seed = normalize_url(url)
 
     def on_page(page: PageResult):
         nonlocal done, errors
@@ -63,6 +66,10 @@ def main(
         else:
             console.print(f"  [green]OK[/green]   {page.url}  -> {page.output_path}")
 
+    def on_skip(skipped_url: str, reason: str) -> None:
+        if reason == "robots":
+            robots_skipped.append(skipped_url)
+
     console.print(f"\n[bold]crawldown[/bold] {url}\n")
 
     try:
@@ -71,8 +78,23 @@ def main(
             TextColumn("[progress.description]{task.description}"),
             transient=True,
         ):
-            asyncio.run(_crawl(config, on_page=on_page))
+            asyncio.run(_crawl(config, on_page=on_page, on_skip=on_skip))
+    except RuntimeError as exc:
+        console.print(f"\n[red]Error:[/red] {exc}\n")
+        raise typer.Exit(1)
     except KeyboardInterrupt:
         console.print("\n[yellow]Interrupted — partial results saved to output directory.[/yellow]")
 
     console.print(f"\n[bold]Done.[/bold] {done} pages crawled, {errors} errors. Output: {output}\n")
+
+    if robots_skipped:
+        if seed in robots_skipped:
+            console.print(
+                "[yellow]Warning:[/yellow] The starting URL was blocked by robots.txt — "
+                "no pages were crawled. Use [bold]--no-robots[/bold] to override.\n"
+            )
+        else:
+            console.print(
+                f"[yellow]{len(robots_skipped)} URL(s) skipped by robots.txt.[/yellow] "
+                "Use [bold]--no-robots[/bold] to override.\n"
+            )
