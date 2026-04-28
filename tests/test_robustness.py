@@ -111,6 +111,45 @@ async def test_fetch_with_retry_raises_after_max_attempts():
 
 
 # ---------------------------------------------------------------------------
+# _fetch_robots: unreachable robots.txt must allow all
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.asyncio
+async def test_fetch_robots_network_error_allows_all():
+    from crawldown.crawler import _fetch_robots
+
+    with patch("crawldown.crawler.asyncio.to_thread", side_effect=OSError("network error")):
+        rp = await _fetch_robots("https://example.com")
+
+    assert rp.allow_all is True
+    assert rp.can_fetch("*", "https://example.com/anything") is True
+
+
+# ---------------------------------------------------------------------------
+# browser not installed → clean RuntimeError
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.asyncio
+async def test_crawl_raises_runtime_error_when_browser_missing(tmp_path):
+    from crawldown.crawler import _crawl
+    from crawldown.models import CrawlConfig
+
+    ctx = AsyncMock()
+    ctx.__aenter__ = AsyncMock(
+        side_effect=Exception("Executable doesn't exist at /some/path/chrome")
+    )
+    ctx.__aexit__ = AsyncMock(return_value=None)
+
+    config = CrawlConfig(url="https://example.com", output_dir=tmp_path)
+
+    with patch("crawldown.crawler.AsyncWebCrawler", return_value=ctx):
+        with pytest.raises(RuntimeError, match="Browser not found"):
+            await _crawl(config)
+
+
+# ---------------------------------------------------------------------------
 # robots.txt enforcement (via _crawl integration)
 # ---------------------------------------------------------------------------
 
@@ -151,6 +190,45 @@ async def test_crawl_skips_robots_disallowed_url(tmp_path):
 
     crawled_urls = [r.url for r in results]
     assert "https://example.com/private/secret" not in crawled_urls
+
+
+@pytest.mark.asyncio
+async def test_crawl_calls_on_skip_for_robots_blocked_url(tmp_path):
+    import urllib.robotparser
+
+    from crawldown.crawler import _crawl
+    from crawldown.models import CrawlConfig
+
+    rp = urllib.robotparser.RobotFileParser()
+    rp.parse(["User-agent: *", "Disallow: /private/"])
+
+    fake_result = MagicMock()
+    fake_result.markdown = "# Page"
+    fake_result.links = {"internal": [{"href": "/private/secret"}]}
+
+    mock_instance = AsyncMock()
+    mock_instance.arun.return_value = fake_result
+    ctx = AsyncMock()
+    ctx.__aenter__ = AsyncMock(return_value=mock_instance)
+    ctx.__aexit__ = AsyncMock(return_value=None)
+
+    skipped = []
+
+    config = CrawlConfig(
+        url="https://example.com",
+        output_dir=tmp_path,
+        max_depth=1,
+        respect_robots=True,
+    )
+
+    with (
+        patch("crawldown.crawler.AsyncWebCrawler", return_value=ctx),
+        patch("crawldown.crawler._fetch_robots", return_value=rp),
+    ):
+        await _crawl(config, on_skip=lambda url, reason: skipped.append((url, reason)))
+
+    assert any(url == "https://example.com/private/secret" for url, _ in skipped)
+    assert all(reason == "robots" for _, reason in skipped)
 
 
 # ---------------------------------------------------------------------------

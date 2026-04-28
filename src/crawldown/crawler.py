@@ -20,7 +20,7 @@ async def _fetch_robots(url: str) -> urllib.robotparser.RobotFileParser:
     try:
         await asyncio.to_thread(rp.read)
     except Exception:
-        pass  # treat as "allow all" when robots.txt is unreachable
+        rp.allow_all = True  # treat as "allow all" when robots.txt is unreachable
     return rp
 
 
@@ -36,7 +36,7 @@ async def _fetch_with_retry(crawler_instance, url: str):
     raise last_exc  # type: ignore[misc]
 
 
-async def _crawl(config: CrawlConfig, on_page=None) -> list[PageResult]:
+async def _crawl(config: CrawlConfig, on_page=None, on_skip=None) -> list[PageResult]:
     results: list[PageResult] = []
     visited: set[str] = set()
     queue: deque[tuple[str, int]] = deque([(normalize_url(config.url), 0)])
@@ -59,6 +59,8 @@ async def _crawl(config: CrawlConfig, on_page=None) -> list[PageResult]:
                 if not url_allowed(url, config.include, config.exclude):
                     continue
                 if robots and not robots.can_fetch("*", url):
+                    if on_skip:
+                        on_skip(url, "robots")
                     continue
 
                 visited.add(url)
@@ -106,6 +108,10 @@ async def _crawl(config: CrawlConfig, on_page=None) -> list[PageResult]:
 
     except asyncio.CancelledError:
         pass  # return partial results on Ctrl-C
+    except Exception as exc:
+        if "Executable doesn't exist" in str(exc):
+            raise RuntimeError("Browser not found. Run: crawl4ai-setup") from None
+        raise
 
     return results
 
